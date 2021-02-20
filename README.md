@@ -12,5 +12,5 @@ then
 docker-compose up
 ```
 
-Once you see the message "`my-app_1 | Running http://localhost:3000`". You should be able to run
-`curl localhost:3000`.
+Once you see the message "`web_1 | /docker-entrypoint.sh: Configuration complete; ready for start up`". You should be able to run
+`curl localhost:8080`.
