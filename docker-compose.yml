@@ -9,6 +9,7 @@ services:
       - "./database/scripts:/docker-entrypoint-initdb.d"
     healthcheck:
       test: "ls /var/run/mysqld/mysqld.sock && exit 0"
+      interval: 1s
   my-app:
     image: node:14
     working_dir: /app
@@ -19,6 +20,21 @@ services:
       - ${APP_PORT}:${APP_PORT}
     volumes:
       - "./app:/app"
+    healthcheck:
+      test: "curl localhost:${APP_PORT} && exit 0"
+      interval: 1s
     depends_on:
       mysql:
+        condition: service_healthy
+  web:
+    image: nginx:1.19-alpine
+    environment:
+      NGINX_ENVSUBST_TEMPLATE_SUFFIX: ".template"
+      API_HOST: my-app:${APP_PORT}
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx:/etc/nginx/templates
+    depends_on:
+      my-app:
         condition: service_healthy
