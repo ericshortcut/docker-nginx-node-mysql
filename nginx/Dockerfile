@@ -1,7 +1,5 @@
 FROM nginx:1.19-alpine
 
-USER root
-
 RUN apk add --no-cache openssl
 
 ENV DOCKERIZE_VERSION v0.6.1
